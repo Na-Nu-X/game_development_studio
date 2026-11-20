@@ -86,12 +86,12 @@
 
   &__ribbon {
     position: absolute;
-    top: $space-5;
+    top: calc(#{$space-5} + 40px);
     right: 0;
     display: flex;
     align-items: center;
     gap: $space-2;
-    max-width: 62%;
+    max-width: 80%;
     padding: 6px $space-3 6px $space-3;
     font-size: 0.75rem;
     font-weight: 600;
@@ -101,7 +101,16 @@
     padding-left: $space-4;
 
     @include up(md) {
-      top: $space-6;
+      top: calc(#{$space-6} + 40px);
+    }
+
+    .card--wide & {
+      top: $space-5;
+      max-width: 50%;
+
+      @include up(md) {
+        top: $space-6;
+      }
     }
 
     span {

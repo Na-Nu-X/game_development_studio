@@ -233,6 +233,7 @@
 .form-grid {
   display: grid;
   gap: $space-5;
+  align-items: start;
 
   @include up(md) {
     grid-template-columns: repeat(2, minmax(0, 1fr));

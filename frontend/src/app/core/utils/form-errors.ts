@@ -8,6 +8,7 @@ export function controlError(control: AbstractControl | null): string | null {
   if (!control || !control.errors || !(control.touched || control.dirty)) return null;
   const errors = control.errors;
   if (errors['server']) return errors['server'] as string;
+  if (errors['required'] && control.value === false) return 'Na odoslanie je potrebný váš súhlas so spracovaním údajov.';
   if (errors['required']) return 'Toto pole je povinné.';
   if (errors['requiredTrue']) return 'Na odoslanie je potrebný váš súhlas.';
   if (errors['email']) return 'Zadajte platnú e-mailovú adresu.';

@@ -142,7 +142,7 @@
 // Mobile drawer -----------------------------------------------------------
 .drawer {
   position: fixed;
-  inset: 0;
+  inset: var(--nav-height) 0 0;
   z-index: $z-drawer;
   pointer-events: none;
 
@@ -164,7 +164,7 @@
 
   &__panel {
     position: absolute;
-    top: var(--nav-height);
+    top: 0;
     right: 0;
     bottom: 0;
     width: min(100%, 420px);
