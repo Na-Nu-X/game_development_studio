@@ -1,0 +1,67 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a routerLink="/" class="footer__wordmark">
+          {{ site.wordmark.primary }}<span>{{ site.wordmark.secondary }}</span>
+        </a>
+        <p>{{ site.tagline }} {{ site.description }}</p>
+        <div class="footer__platforms" aria-label="Platformové programy">
+          @for (badge of site.platformBadges; track badge.platform) {
+            <span class="badge badge--muted">{{ badge.platform }}</span>
+          }
+        </div>
+        <p class="footer__note">
+          Registrovaný vývojár pre PC, PlayStation, Xbox a Nintendo. Všetky ochranné známky patria ich príslušným vlastníkom.
+        </p>
+      </div>
+
+      <nav class="footer__col" aria-label="Rýchle odkazy">
+        <h2 class="eyebrow">Navigácia</h2>
+        <ul role="list">
+          @for (link of quickLinks; track link.path) {
+            <li><a [routerLink]="link.path">{{ link.label }}</a></li>
+          }
+        </ul>
+      </nav>
+
+      <div class="footer__col">
+        <h2 class="eyebrow">Kontakt</h2>
+        <ul role="list">
+          <li><a [href]="'mailto:' + site.contact.businessEmail">{{ site.contact.businessEmail }}</a></li>
+          <li><a [href]="'mailto:' + site.contact.pressEmail">{{ site.contact.pressEmail }}</a></li>
+          <li><a [href]="'tel:' + site.contact.phoneHref" class="mono">{{ site.contact.phone }}</a></li>
+        </ul>
+        <address>
+          {{ site.legalName }}<br />
+          {{ site.address.street }}<br />
+          {{ site.address.postalCode }} {{ site.address.city }}, {{ site.address.country }}
+        </address>
+      </div>
+
+      <div class="footer__col">
+        <h2 class="eyebrow">Sledujte nás</h2>
+        <ul role="list">
+          @for (social of footerSocials; track social.label) {
+            <li>
+              <a [href]="social.url" target="_blank" rel="noopener noreferrer" class="footer__social">
+                {{ social.label }}
+                <app-icon name="arrow-up-right" [size]="14" />
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="mono">
+        IČO: {{ site.billing.ico }} · DIČ: {{ site.billing.dic }} · IČ DPH: {{ site.billing.icDph }}
+      </p>
+      <p>
+        © {{ year }} {{ site.legalName }}. Osobné údaje z formulárov spracúvame v súlade s nariadením GDPR
+        (EÚ) 2016/679 výhradne na účel vybavenia vašej požiadavky.
+      </p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,63 @@
+<header class="nav" [class.is-scrolled]="scrolled() || menuOpen()">
+  <div class="nav__inner container">
+    <a routerLink="/" class="wordmark" [attr.aria-label]="site.studioName + ' – domov'">
+      <span class="wordmark__mark" aria-hidden="true"></span>
+      <span class="wordmark__primary">{{ site.wordmark.primary }}</span>
+      <span class="wordmark__secondary">{{ site.wordmark.secondary }}</span>
+    </a>
+
+    <nav class="nav__links" aria-label="Hlavná navigácia">
+      @for (link of links; track link.path) {
+        <a [routerLink]="link.path" routerLinkActive="is-active" class="nav__link">
+          {{ link.label }}
+          @if (link.showHiringBadge && jobs.count() > 0) {
+            <span class="hiring-badge" [attr.aria-label]="jobs.count() + ' otvorených pozícií'">{{ jobs.count() }}</span>
+          }
+        </a>
+      }
+    </nav>
+
+    <div class="nav__actions">
+      <a routerLink="/studio-a-kontakt" fragment="kontakt-formular" class="btn btn--primary btn--sm nav__cta">
+        Spolupráca
+      </a>
+      <button
+        type="button"
+        class="nav__toggle"
+        (click)="toggleMenu()"
+        [attr.aria-expanded]="menuOpen()"
+        aria-controls="mobile-drawer"
+        [attr.aria-label]="menuOpen() ? 'Zavrieť menu' : 'Otvoriť menu'"
+      >
+        <app-icon [name]="menuOpen() ? 'close' : 'menu'" [size]="24" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="mobile-drawer" [class.is-open]="menuOpen()" [attr.inert]="menuOpen() ? null : ''">
+  <div class="drawer__backdrop" (click)="closeMenu()"></div>
+  <nav class="drawer__panel" aria-label="Mobilná navigácia">
+    <ol class="drawer__links" role="list">
+      @for (link of links; track link.path; let i = $index) {
+        <li [style.--i]="i">
+          <a [routerLink]="link.path" routerLinkActive="is-active" class="drawer__link">
+            <span class="drawer__index">0{{ i + 1 }}</span>
+            {{ link.label }}
+            @if (link.showHiringBadge && jobs.count() > 0) {
+              <span class="hiring-badge">{{ jobs.count() }}</span>
+            }
+          </a>
+        </li>
+      }
+    </ol>
+    <a routerLink="/studio-a-kontakt" fragment="kontakt-formular" class="btn btn--primary btn--block">
+      Spolupráca
+      <app-icon name="arrow-right" [size]="18" />
+    </a>
+    <div class="drawer__meta">
+      <a [href]="'mailto:' + site.contact.businessEmail">{{ site.contact.businessEmail }}</a>
+      <span>{{ site.address.city }}, {{ site.address.country }}</span>
+    </div>
+  </nav>
+</div>

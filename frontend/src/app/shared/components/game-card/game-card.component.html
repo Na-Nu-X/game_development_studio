@@ -1,0 +1,46 @@
+<article class="card" [class.card--wide]="size() === 'wide'">
+  <a class="card__link" [routerLink]="['/hry', game().slug]" [attr.aria-label]="'Detail hry ' + game().title">
+    <div class="card__media">
+      <img [src]="image()" [alt]="'Key art hry ' + game().title" loading="lazy" decoding="async" />
+      <div class="card__scrim"></div>
+    </div>
+
+    <div class="card__top">
+      <span class="badge" [class]="statusClass()">
+        @if (game().status === 'vydane') {
+          <span class="badge__dot"></span>
+        }
+        {{ game().status_label }}
+      </span>
+      <span class="badge" [class.badge--tech]="isUnreal()">{{ engine() }}</span>
+    </div>
+
+    @if (topAward(); as award) {
+      <div class="card__ribbon" [title]="award">
+        <app-icon name="award" [size]="14" />
+        <span>{{ award }}</span>
+      </div>
+    }
+
+    <div class="card__body">
+      @if (indexLabel(); as label) {
+        <span class="card__index mono">{{ label }}</span>
+      }
+      <p class="card__genre eyebrow">{{ game().genre }} · <span class="mono">{{ game().release_date_label }}</span></p>
+      <h3 class="card__title">{{ game().title }}</h3>
+      <p class="card__tagline">{{ game().tagline }}</p>
+
+      <div class="card__footer">
+        <ul class="card__platforms" role="list" aria-label="Platformy">
+          @for (platform of platforms(); track platform) {
+            <li>{{ platform }}</li>
+          }
+        </ul>
+        <span class="card__cta">
+          Detail hry
+          <app-icon name="arrow-right" [size]="16" />
+        </span>
+      </div>
+    </div>
+  </a>
+</article>

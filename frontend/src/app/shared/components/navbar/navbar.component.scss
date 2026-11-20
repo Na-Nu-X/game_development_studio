@@ -1,0 +1,227 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: $z-nav;
+  height: var(--nav-height);
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color $duration-base ease,
+    border-color $duration-base ease,
+    backdrop-filter $duration-base ease;
+
+  &.is-scrolled {
+    background: rgba(9, 10, 15, 0.86);
+    border-bottom-color: var(--color-border);
+    backdrop-filter: blur(14px) saturate(140%);
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-5;
+    height: 100%;
+  }
+
+  &__links {
+    display: none;
+    gap: $space-1;
+
+    @include up(lg) {
+      display: flex;
+    }
+  }
+
+  &__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-2 $space-3;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    transition: color $duration-fast ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: $space-3;
+      right: $space-3;
+      bottom: -2px;
+      height: 1px;
+      background: var(--color-accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform $duration-base $ease-out;
+    }
+
+    &:hover,
+    &.is-active {
+      color: var(--color-text);
+    }
+
+    &.is-active::after {
+      transform: scaleX(1);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+  }
+
+  &__cta {
+    display: none;
+
+    @include up(sm) {
+      display: inline-flex;
+    }
+  }
+
+  &__toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: $radius-sm;
+    color: var(--color-text);
+
+    @include up(lg) {
+      display: none;
+    }
+  }
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+
+  &__mark {
+    width: 14px;
+    height: 14px;
+    background: var(--color-accent);
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+    margin-right: $space-1;
+  }
+
+  &__primary {
+    font-weight: 700;
+  }
+
+  &__secondary {
+    font-weight: 500;
+    color: var(--color-text-muted);
+  }
+}
+
+.hiring-badge {
+  @include tabular;
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--color-bg);
+  background: var(--color-success);
+  border-radius: $radius-pill;
+}
+
+// Mobile drawer -----------------------------------------------------------
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: $z-drawer;
+  pointer-events: none;
+
+  @include up(lg) {
+    display: none;
+  }
+
+  &.is-open {
+    pointer-events: auto;
+  }
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    transition: opacity $duration-base ease;
+  }
+
+  &__panel {
+    position: absolute;
+    top: var(--nav-height);
+    right: 0;
+    bottom: 0;
+    width: min(100%, 420px);
+    display: flex;
+    flex-direction: column;
+    gap: $space-6;
+    padding: $space-6 $space-5;
+    background: var(--color-bg);
+    border-left: 1px solid var(--color-border);
+    transform: translateX(100%);
+    transition: transform $duration-base $ease-out;
+    overflow-y: auto;
+  }
+
+  &.is-open &__backdrop {
+    opacity: 1;
+  }
+
+  &.is-open &__panel {
+    transform: none;
+  }
+
+  &__links {
+    display: grid;
+    margin: 0;
+
+    li {
+      border-bottom: 1px solid var(--color-border);
+    }
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: $space-4;
+    padding: $space-5 0;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+
+    &.is-active {
+      color: var(--color-accent);
+    }
+  }
+
+  &__index {
+    @include tabular;
+    font-size: 0.75rem;
+    color: var(--color-text-faint);
+  }
+
+  &__meta {
+    display: grid;
+    gap: $space-1;
+    margin-top: auto;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+}

@@ -1,0 +1,122 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+.footer {
+  margin-top: auto;
+  padding-top: $space-9;
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border);
+  font-size: 0.9375rem;
+
+  &__top {
+    display: grid;
+    gap: $space-7;
+    padding-bottom: $space-8;
+
+    @include up(md) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @include up(lg) {
+      grid-template-columns: 2fr 1fr 1.3fr 1fr;
+    }
+  }
+
+  &__brand {
+    display: grid;
+    gap: $space-4;
+    align-content: start;
+
+    @include up(md) {
+      grid-column: 1 / -1;
+    }
+
+    @include up(lg) {
+      grid-column: auto;
+      padding-right: $space-6;
+    }
+
+    p {
+      color: var(--color-text-muted);
+      max-width: 48ch;
+    }
+  }
+
+  &__wordmark {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+
+    span {
+      margin-left: $space-2;
+      font-weight: 500;
+      color: var(--color-accent);
+    }
+  }
+
+  &__platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+  }
+
+  &__note {
+    font-size: 0.8125rem;
+  }
+
+  &__col {
+    display: grid;
+    gap: $space-4;
+    align-content: start;
+
+    h2 {
+      font-size: 0.75rem;
+    }
+
+    ul {
+      display: grid;
+      gap: $space-3;
+      margin: 0;
+    }
+
+    a {
+      color: var(--color-text-muted);
+      transition: color $duration-fast ease;
+
+      &:hover {
+        color: var(--color-accent);
+      }
+    }
+
+    address {
+      font-style: normal;
+      color: var(--color-text-faint);
+      line-height: 1.7;
+    }
+  }
+
+  &__social {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+  }
+
+  &__bottom {
+    display: grid;
+    gap: $space-3;
+    padding-block: $space-6;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.8125rem;
+    color: var(--color-text-faint);
+
+    @include up(lg) {
+      grid-template-columns: auto 1fr;
+      gap: $space-7;
+
+      p:last-child {
+        text-align: right;
+      }
+    }
+  }
+}

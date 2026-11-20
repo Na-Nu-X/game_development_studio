@@ -1,0 +1,133 @@
+<section class="estimator" aria-labelledby="estimator-title">
+  <div class="estimator__config">
+    <header class="estimator__head">
+      <p class="eyebrow">Kalkulačka spolupráce</p>
+      <h3 id="estimator-title">Nakonfigurujte si dedikovaný tím</h3>
+    </header>
+
+    <!-- 1. Project type -->
+    <fieldset class="group">
+      <legend><span class="group__step mono">01</span> Typ projektu</legend>
+      <div class="options options--types">
+        @for (type of projectTypes; track type.id) {
+          <button
+            type="button"
+            class="option"
+            [class.is-selected]="projectType() === type.id"
+            [attr.aria-pressed]="projectType() === type.id"
+            (click)="projectType.set(type.id)"
+          >
+            <span class="option__label">{{ type.label }}</span>
+            <span class="option__hint">{{ type.hint }}</span>
+          </button>
+        }
+      </div>
+    </fieldset>
+
+    <!-- 2. Engine -->
+    <fieldset class="group">
+      <legend><span class="group__step mono">02</span> Technológia / Engine</legend>
+      <div class="segmented">
+        @for (option of engines; track option.id) {
+          <button
+            type="button"
+            class="segmented__item"
+            [class.is-selected]="engine() === option.id"
+            [attr.aria-pressed]="engine() === option.id"
+            (click)="engine.set(option.id)"
+          >
+            {{ option.label }}
+          </button>
+        }
+      </div>
+    </fieldset>
+
+    <!-- 3. Team size -->
+    <fieldset class="group">
+      <legend>
+        <span class="group__step mono">03</span> Veľkosť dedikovaného tímu
+        <output class="group__value mono" for="team-size">{{ specialistsLabel(teamSize()) }}</output>
+      </legend>
+      <input
+        id="team-size"
+        class="range"
+        type="range"
+        [min]="teamLimits.min"
+        [max]="teamLimits.max"
+        step="1"
+        [value]="teamSize()"
+        (input)="onTeamSizeInput($event)"
+        [style.--progress]="sliderProgress() + '%'"
+        aria-label="Veľkosť tímu"
+        [attr.aria-valuetext]="specialistsLabel(teamSize())"
+      />
+      <div class="range__scale mono" aria-hidden="true">
+        <span>{{ teamLimits.min }}</span>
+        <span>{{ teamLimits.max }}</span>
+      </div>
+    </fieldset>
+
+    <!-- 4. Duration -->
+    <fieldset class="group">
+      <legend><span class="group__step mono">04</span> Odhadovaná dĺžka spolupráce</legend>
+      <div class="segmented segmented--4">
+        @for (option of durations; track option.months) {
+          <button
+            type="button"
+            class="segmented__item mono"
+            [class.is-selected]="duration() === option.months"
+            [attr.aria-pressed]="duration() === option.months"
+            (click)="duration.set(option.months)"
+          >
+            {{ option.months }} mes.
+          </button>
+        }
+      </div>
+    </fieldset>
+  </div>
+
+  <aside class="estimator__result" aria-live="polite">
+    <p class="eyebrow">Orientačná investícia</p>
+
+    <div class="price">
+      <span class="price__value mono">{{ formatEur(monthlyCost()) }}</span>
+      <span class="price__unit">/ mesiac</span>
+    </div>
+    <div class="total">
+      <span>Spolu za {{ monthsLabel(duration()) }}</span>
+      <strong class="mono">{{ formatEur(totalCost()) }}</strong>
+    </div>
+    <p class="note">{{ discountLabel() }} · ceny bez DPH</p>
+
+    <div class="result-block">
+      <h4 class="result-block__title">
+        <app-icon name="users" [size]="16" />
+        Odporúčané zloženie tímu
+      </h4>
+      <ul class="team" role="list">
+        @for (member of team(); track member.label) {
+          <li>
+            <span class="team__count mono">{{ member.count }}×</span>
+            <span>{{ member.label }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <div class="result-block result-block--inline">
+      <h4 class="result-block__title">
+        <app-icon name="clock" [size]="16" />
+        Nástup tímu
+      </h4>
+      <strong class="mono onboarding">{{ onboarding() }}</strong>
+    </div>
+
+    <button type="button" class="btn btn--primary btn--block" (click)="requestConsultation()">
+      Vyžiadať nezáväznú konzultáciu
+      <app-icon name="arrow-right" [size]="18" />
+    </button>
+    <p class="disclaimer">
+      Odhad má informatívny charakter. Presnú ponuku pripravíme po úvodnom hovore a technickom audite.
+    </p>
+  </aside>
+</section>
