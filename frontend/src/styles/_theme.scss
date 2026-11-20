@@ -1,0 +1,28 @@
+@use 'variables' as *;
+
+// Runtime theme — override these in one place to rebrand the whole site.
+:root {
+  color-scheme: dark;
+
+  --color-bg: #{$color-void};
+  --color-surface: #{$color-slate};
+  --color-surface-2: #{$color-charcoal};
+  --color-border: #{$color-border};
+  --color-border-strong: #{$color-border-strong};
+  --color-text: #{$color-text};
+  --color-text-muted: #{$color-text-muted};
+  --color-text-faint: #{$color-text-faint};
+  --color-accent: #{$color-amber};
+  --color-accent-hover: #{$color-amber-hover};
+  --color-accent-contrast: #{$color-void};
+  --color-tech: #{$color-violet};
+  --color-success: #{$color-emerald};
+  --color-danger: #{$color-danger};
+
+  --font-display: #{$font-display};
+  --font-body: #{$font-body};
+  --font-mono: #{$font-mono};
+
+  --nav-height: #{$nav-height};
+  --ease-out: #{$ease-out};
+}

@@ -1,0 +1,486 @@
+// Global, reusable UI primitives (buttons, badges, sections, forms).
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.container {
+  @include container;
+}
+
+.section {
+  padding-block: $space-9;
+
+  @include up(lg) {
+    padding-block: $space-10;
+  }
+
+  &--tight {
+    padding-block: $space-8;
+  }
+
+  &--surface {
+    background: var(--color-surface);
+    border-block: 1px solid var(--color-border);
+  }
+}
+
+.section-head {
+  display: grid;
+  gap: $space-4;
+  margin-bottom: $space-7;
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: $space-6;
+  }
+
+  &__index {
+    @include eyebrow;
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    margin-bottom: $space-3;
+
+    &::after {
+      content: '';
+      width: 48px;
+      height: 1px;
+      background: var(--color-accent);
+    }
+  }
+
+  p {
+    margin-top: $space-4;
+  }
+}
+
+// Buttons ---------------------------------------------------------------
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  min-height: 48px;
+  padding: 0 $space-5;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+  border-radius: $radius-sm;
+  transition:
+    background-color $duration-fast ease,
+    border-color $duration-fast ease,
+    color $duration-fast ease,
+    transform $duration-fast ease;
+  white-space: nowrap;
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    transition: transform $duration-base $ease-out;
+  }
+
+  &:hover svg.arrow {
+    transform: translateX(4px);
+  }
+
+  &--primary {
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+
+    &:hover:not(:disabled) {
+      background: var(--color-accent-hover);
+    }
+  }
+
+  &--ghost {
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+    background: rgba(9, 10, 15, 0.35);
+    backdrop-filter: blur(8px);
+
+    &:hover:not(:disabled) {
+      border-color: var(--color-text);
+    }
+  }
+
+  &--text {
+    min-height: auto;
+    padding: 0;
+    color: var(--color-accent);
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+
+  &--sm {
+    min-height: 38px;
+    padding: 0 $space-4;
+    font-size: 0.875rem;
+  }
+
+  &--block {
+    width: 100%;
+  }
+}
+
+// Badges & tags ---------------------------------------------------------
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  border: 1px solid var(--color-border-strong);
+  border-radius: $radius-sm;
+  color: var(--color-text);
+  background: rgba(9, 10, 15, 0.6);
+  backdrop-filter: blur(6px);
+  white-space: nowrap;
+
+  &--success {
+    color: var(--color-success);
+    border-color: color-mix(in srgb, var(--color-success) 45%, transparent);
+    background: color-mix(in srgb, var(--color-success) 12%, rgba(9, 10, 15, 0.7));
+  }
+
+  &--tech {
+    color: #c4b5fd;
+    border-color: color-mix(in srgb, var(--color-tech) 60%, transparent);
+    background: color-mix(in srgb, var(--color-tech) 18%, rgba(9, 10, 15, 0.7));
+  }
+
+  &--accent {
+    color: var(--color-accent);
+    border-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+    background: color-mix(in srgb, var(--color-accent) 12%, rgba(9, 10, 15, 0.7));
+  }
+
+  &--muted {
+    color: var(--color-text-muted);
+    border-color: var(--color-border);
+  }
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 25%, transparent);
+  }
+}
+
+// Filter chips ----------------------------------------------------------
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  min-height: 40px;
+  padding: 0 $space-4;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-sm;
+  background: var(--color-surface);
+  transition:
+    color $duration-fast ease,
+    border-color $duration-fast ease,
+    background-color $duration-fast ease;
+
+  &:hover {
+    color: var(--color-text);
+    border-color: var(--color-border-strong);
+  }
+
+  &[aria-pressed='true'],
+  &.is-active {
+    color: var(--color-accent-contrast);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .count {
+    @include tabular;
+    font-size: 0.75rem;
+    opacity: 0.75;
+  }
+}
+
+// Forms -----------------------------------------------------------------
+.form-grid {
+  display: grid;
+  gap: $space-5;
+
+  @include up(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    .field--full {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+.field {
+  display: grid;
+  gap: $space-2;
+
+  label,
+  .field__label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--color-text);
+  }
+
+  .req {
+    color: var(--color-accent);
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: $space-3 $space-4;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-strong);
+    border-radius: $radius-sm;
+    color: var(--color-text);
+    transition: border-color $duration-fast ease;
+
+    &::placeholder {
+      color: var(--color-text-faint);
+    }
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.28);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent);
+    }
+
+    &.is-invalid {
+      border-color: var(--color-danger);
+    }
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%239CA3AF' stroke-width='1.5'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  textarea {
+    min-height: 140px;
+    resize: vertical;
+  }
+
+  &__hint {
+    font-size: 0.8125rem;
+    color: var(--color-text-faint);
+  }
+
+  &__error {
+    font-size: 0.8125rem;
+    color: var(--color-danger);
+  }
+}
+
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+
+  input {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: var(--color-accent);
+  }
+
+  a {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+.alert {
+  display: flex;
+  gap: $space-3;
+  padding: $space-4 $space-5;
+  border: 1px solid var(--color-border-strong);
+  border-left-width: 3px;
+  font-size: 0.9375rem;
+
+  &--success {
+    border-left-color: var(--color-success);
+    background: color-mix(in srgb, var(--color-success) 8%, var(--color-surface));
+  }
+
+  &--error {
+    border-left-color: var(--color-danger);
+    background: color-mix(in srgb, var(--color-danger) 8%, var(--color-surface));
+  }
+}
+
+// Loading skeleton ------------------------------------------------------
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.04), transparent);
+    animation: shimmer 1.6s infinite;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.state-message {
+  padding: $space-7 $space-5;
+  text-align: center;
+  color: var(--color-text-muted);
+  border: 1px dashed var(--color-border-strong);
+
+  strong {
+    display: block;
+    margin-bottom: $space-2;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    color: var(--color-text);
+  }
+}
+
+// Bulleted list with amber markers
+.feature-list {
+  display: grid;
+  gap: $space-3;
+  padding: 0;
+  list-style: none;
+
+  li {
+    position: relative;
+    padding-left: $space-5;
+    color: var(--color-text-muted);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.7em;
+      width: 10px;
+      height: 1px;
+      background: var(--color-accent);
+    }
+  }
+}
+
+// Inner page hero --------------------------------------------------------
+.page-hero {
+  position: relative;
+  padding-top: calc(var(--nav-height) + #{$space-8});
+  padding-bottom: $space-8;
+  border-bottom: 1px solid var(--color-border);
+  overflow: hidden;
+  isolation: isolate;
+
+  @include up(lg) {
+    padding-top: calc(var(--nav-height) + #{$space-9});
+    padding-bottom: $space-9;
+  }
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.35;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(9, 10, 15, 0.95) 20%, rgba(9, 10, 15, 0.4)),
+        linear-gradient(to top, var(--color-bg), transparent 60%);
+    }
+  }
+
+  &__grid {
+    display: grid;
+    gap: $space-6;
+
+    @include up(lg) {
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      align-items: end;
+    }
+  }
+
+  h1 {
+    margin-top: $space-4;
+  }
+
+  .lead {
+    margin-top: $space-5;
+  }
+}
+
+// Architectural grid of equal cells divided by 1px lines
+.line-grid {
+  display: grid;
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+
+  > * {
+    background: var(--color-bg);
+  }
+}
