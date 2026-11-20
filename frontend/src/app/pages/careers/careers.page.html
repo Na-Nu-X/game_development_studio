@@ -1,0 +1,143 @@
+<header class="page-hero">
+  <div class="page-hero__bg" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=2000&q=70" alt="" />
+  </div>
+  <div class="container page-hero__grid">
+    <div>
+      <p class="eyebrow">
+        <span class="badge badge--success"><span class="badge__dot"></span>{{ positionsLabel(store.count()) }}</span>
+      </p>
+      <h1>Kariéra v štúdiu</h1>
+      <p class="lead">
+        Robíme hry, ktoré by sme sami chceli hrať – a firmu, v ktorej by sme sami chceli pracovať. Férová mzda
+        zverejnená v každom inzeráte, podiel na tržbách a priestor na vlastné nápady.
+      </p>
+    </div>
+  </div>
+</header>
+
+<!-- Perks -->
+<section class="section section--tight" aria-labelledby="perks-title">
+  <div class="container">
+    <h2 id="perks-title" class="eyebrow perks-title">Prečo práve my</h2>
+    <ul class="perks line-grid" role="list">
+      @for (perk of site.careerPerks; track perk.title; let i = $index) {
+        <li class="perk">
+          <span class="mono perk__num">0{{ i + 1 }}</span>
+          <h3>{{ perk.title }}</h3>
+          <p>{{ perk.text }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- Openings -->
+<section class="section section--surface" aria-labelledby="jobs-title">
+  <div class="container">
+    <header class="section-head">
+      <div>
+        <p class="section-head__index">Otvorené pozície</p>
+        <h2 id="jobs-title">Hľadáme práve teraz</h2>
+      </div>
+    </header>
+
+    <div class="chip-group dept-filter" role="group" aria-label="Filtrovať podľa oddelenia">
+      <button type="button" class="chip" [attr.aria-pressed]="department() === null" (click)="department.set(null)">
+        Všetky <span class="count">{{ store.count() }}</span>
+      </button>
+      @for (dept of departments; track dept[0]) {
+        <button type="button" class="chip" [attr.aria-pressed]="department() === dept[0]" (click)="department.set(dept[0])">
+          {{ dept[1] }} <span class="count">{{ countsByDepartment()[dept[0]] ?? 0 }}</span>
+        </button>
+      }
+    </div>
+
+    @if (store.error()) {
+      <app-state (retry)="store.reload()" />
+    } @else if (store.isLoading() && store.count() === 0) {
+      @for (i of [1, 2, 3]; track i) {
+        <div class="skeleton job-skeleton"></div>
+      }
+    } @else if (filteredJobs().length === 0) {
+      <app-state
+        kind="empty"
+        title="V tomto oddelení momentálne nehľadáme"
+        [message]="'Pošlite nám otvorenú prihlášku s portfóliom na ' + site.contact.careersEmail + '.'"
+      />
+    } @else {
+      <ul class="jobs" role="list">
+        @for (job of filteredJobs(); track job.id) {
+          <li class="job" [id]="'job-' + job.id" [class.is-open]="expandedId() === job.id">
+            <button
+              type="button"
+              class="job__summary"
+              (click)="toggle(job.id)"
+              [attr.aria-expanded]="expandedId() === job.id"
+              [attr.aria-controls]="'job-details-' + job.id"
+            >
+              <span class="job__main">
+                <span class="job__tags">
+                  <span class="badge badge--muted">{{ job.department_label }}</span>
+                  <span class="badge" [class.badge--accent]="job.seniority === 'Senior'">{{ job.seniority }}</span>
+                </span>
+                <span class="job__title">{{ job.title }}</span>
+                <span class="job__location">
+                  <app-icon name="pin" [size]="14" />
+                  {{ job.location }}
+                </span>
+              </span>
+              <span class="job__salary">
+                <span class="job__salary-label">Základná mzda</span>
+                <span class="mono">od {{ formatEur(job.salary_from_eur) }} / mesiac</span>
+              </span>
+              <app-icon name="chevron" [size]="22" class="job__chevron" />
+            </button>
+
+            <div class="job__details" [id]="'job-details-' + job.id" [attr.hidden]="expandedId() === job.id ? null : ''">
+              <p class="job__description">{{ job.description }}</p>
+              <div class="job__columns">
+                <div>
+                  <h4>Čo od teba očakávame</h4>
+                  <ul class="feature-list">
+                    @for (item of job.requirements; track item) {
+                      <li>{{ item }}</li>
+                    }
+                  </ul>
+                </div>
+                <div>
+                  <h4>Čo ponúkame</h4>
+                  <ul class="feature-list">
+                    @for (item of job.benefits; track item) {
+                      <li>{{ item }}</li>
+                    }
+                  </ul>
+                </div>
+              </div>
+              <div class="job__footer">
+                <p class="job__legal">
+                  Základná zložka mzdy: <strong class="mono">od {{ formatEur(job.salary_from_eur) }} brutto / mesiac</strong>.
+                  Konečná výška závisí od skúseností a portfólia.
+                </p>
+                <button type="button" class="btn btn--primary" (click)="applyingTo.set(job)">
+                  Reagovať na pozíciu
+                  <app-icon name="arrow-right" [size]="18" />
+                </button>
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+
+    <p class="statutory">
+      Údaje o mzde uvádzame v súlade so zákonom č. 5/2004 Z. z. o službách zamestnanosti ako základnú zložku
+      mzdy v hrubom vyjadrení. Nenašli ste svoju pozíciu? Pošlite nám portfólio na
+      <a [href]="'mailto:' + site.contact.careersEmail">{{ site.contact.careersEmail }}</a>.
+    </p>
+  </div>
+</section>
+
+@if (applyingTo(); as job) {
+  <app-job-application-modal [job]="job" (closed)="applyingTo.set(null)" />
+}

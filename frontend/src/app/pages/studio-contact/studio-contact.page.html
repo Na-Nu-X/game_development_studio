@@ -1,0 +1,160 @@
+<header class="page-hero">
+  <div class="page-hero__bg" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=2000&q=70" alt="" />
+  </div>
+  <div class="container page-hero__grid">
+    <div>
+      <p class="eyebrow">O štúdiu · od {{ site.foundedYear }}</p>
+      <h1>{{ site.studioName }}</h1>
+      <p class="lead">{{ site.description }}</p>
+    </div>
+  </div>
+</header>
+
+<!-- Story -->
+<section class="section" aria-labelledby="story-title">
+  <div class="container story">
+    <div>
+      <p class="section-head__index">01 / Príbeh</p>
+      <h2 id="story-title">Z podkrovia na Mlynských nivách až na konzoly</h2>
+    </div>
+    <div class="story__text">
+      <p>
+        Začínali sme v roku {{ site.foundedYear }} ako štyria priatelia s jedným počítačom na dvoch a nápadom na
+        hru o zime, ktorá nikdy neodišla. Z tohto nápadu sa po šiestich rokoch stala <em>Tichá Morena</em> –
+        hra, ktorá vyšla na všetkých hlavných platformách a priniesla nám prvé medzinárodné ocenenia.
+      </p>
+      <p>
+        Dnes sme tím takmer štyroch desiatok vývojárov, artistov a dizajnérov. Popri vlastných tituloch pracujeme
+        ako co-development partner pre vydavateľov a štúdiá z celej Európy – v Unreal Engine 5, Unity aj v našom
+        vlastnom C++ engine.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Philosophy -->
+<section class="section section--surface" aria-labelledby="philosophy-title">
+  <div class="container">
+    <header class="section-head">
+      <div>
+        <p class="section-head__index">02 / Filozofia</p>
+        <h2 id="philosophy-title">Ako premýšľame o vývoji</h2>
+      </div>
+    </header>
+    <div class="pillars line-grid">
+      @for (pillar of pillars; track pillar.title; let i = $index) {
+        <div class="pillar">
+          <span class="mono pillar__num">0{{ i + 1 }}</span>
+          <h3>{{ pillar.title }}</h3>
+          <p>{{ pillar.text }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Leadership -->
+<section class="section" aria-labelledby="leadership-title">
+  <div class="container">
+    <header class="section-head">
+      <div>
+        <p class="section-head__index">03 / Vedenie</p>
+        <h2 id="leadership-title">Ľudia za štúdiom</h2>
+      </div>
+    </header>
+    <ul class="leaders" role="list">
+      @for (leader of site.leadership; track leader.name) {
+        <li class="leader">
+          <span class="leader__avatar" aria-hidden="true">{{ initials(leader.name) }}</span>
+          <div>
+            <h3>{{ leader.name }}</h3>
+            <p class="leader__role">{{ leader.role }}</p>
+            <p class="leader__bio">{{ leader.bio }}</p>
+          </div>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- Console capabilities -->
+<section class="section section--surface section--tight" aria-labelledby="platform-title">
+  <div class="container">
+    <h2 id="platform-title" class="eyebrow consoles-title">Certifikované konzolové kompetencie</h2>
+    <ul class="consoles line-grid" role="list">
+      @for (badge of site.platformBadges; track badge.platform) {
+        <li>
+          <span class="consoles__platform">{{ badge.platform }}</span>
+          <span class="consoles__program mono">{{ badge.program }}</span>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="section" id="kontakt-formular" aria-labelledby="contact-title">
+  <div class="container contact">
+    <aside class="contact__info">
+      <p class="section-head__index">04 / Kontakt</p>
+      <h2 id="contact-title">Poďme spolu tvoriť</h2>
+      <p class="lead">Vydavateľ, B2B partner alebo novinár? Napíšte nám – odpovedáme do 2 pracovných dní.</p>
+
+      <ul class="channels" role="list">
+        <li>
+          <app-icon name="briefcase" [size]="20" />
+          <span>
+            <span class="channels__label">Co-development & publishing</span>
+            <a [href]="'mailto:' + site.contact.businessEmail">{{ site.contact.businessEmail }}</a>
+          </span>
+        </li>
+        <li>
+          <app-icon name="newspaper" [size]="20" />
+          <span>
+            <span class="channels__label">Médiá a press kit</span>
+            <a [href]="'mailto:' + site.contact.pressEmail">{{ site.contact.pressEmail }}</a>
+          </span>
+        </li>
+        <li>
+          <app-icon name="users" [size]="20" />
+          <span>
+            <span class="channels__label">Kariéra</span>
+            <a [href]="'mailto:' + site.contact.careersEmail">{{ site.contact.careersEmail }}</a>
+          </span>
+        </li>
+        <li>
+          <app-icon name="phone" [size]="20" />
+          <span>
+            <span class="channels__label">Telefón</span>
+            <a [href]="'tel:' + site.contact.phoneHref" class="mono">{{ site.contact.phone }}</a>
+          </span>
+        </li>
+      </ul>
+
+      <div class="office">
+        <h3 class="eyebrow">Ateliér v Bratislave</h3>
+        <address>
+          <strong>{{ site.legalName }}</strong><br />
+          {{ site.address.street }}<br />
+          {{ site.address.postalCode }} {{ site.address.city }}<br />
+          {{ site.address.country }}
+        </address>
+        <a [href]="site.address.mapUrl" target="_blank" rel="noopener noreferrer" class="btn btn--text btn--sm">
+          <app-icon name="pin" [size]="16" />
+          Zobraziť na mape
+        </a>
+        <dl class="billing mono">
+          <div><dt>IČO</dt><dd>{{ site.billing.ico }}</dd></div>
+          <div><dt>DIČ</dt><dd>{{ site.billing.dic }}</dd></div>
+          <div><dt>IČ DPH</dt><dd>{{ site.billing.icDph }}</dd></div>
+        </dl>
+        <p class="registry">{{ site.billing.registry }}</p>
+      </div>
+    </aside>
+
+    <div class="contact__form">
+      <app-inquiry-form />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,233 @@
+<!-- HERO ------------------------------------------------------------------>
+<section class="hero">
+  <div class="hero__bg" aria-hidden="true">
+    @if (flagship(); as game) {
+      <img [src]="game.hero_banner_url" alt="" fetchpriority="high" />
+    }
+    <div class="hero__scrim"></div>
+    <div class="hero__glow"></div>
+  </div>
+
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <p class="eyebrow hero__eyebrow">
+        <span class="hero__pulse"></span>
+        Nezávislé herné štúdio · {{ site.address.city }} · od {{ site.foundedYear }}
+      </p>
+      <h1 class="display display-xl">
+        Kujeme temné svety,<br />
+        <span class="text-accent">na ktoré sa nezabúda.</span>
+      </h1>
+      <p class="lead">
+        Vyvíjame vlastné atmosférické hry v Unreal Engine 5 a Unity a ako technologický partner pomáhame vydavateľom
+        s co-developmentom a portovaním na PlayStation 5, Xbox a Nintendo Switch.
+      </p>
+      <div class="hero__ctas">
+        <a routerLink="/hry" class="btn btn--primary">
+          Preskúmať naše hry
+          <app-icon name="arrow-right" [size]="18" />
+        </a>
+        <a routerLink="/sluzby" class="btn btn--ghost">Co-Development & Služby</a>
+      </div>
+    </div>
+
+    @if (flagship(); as game) {
+      <a class="spotlight" [routerLink]="['/hry', game.slug]">
+        <span class="eyebrow">Vlajková loď</span>
+        <img [src]="game.cover_image_url" [alt]="'Key art ' + game.title" class="spotlight__img" />
+        <span class="spotlight__body">
+          <span class="spotlight__title">{{ game.title }}</span>
+          <span class="spotlight__meta">
+            <span class="badge" [class.badge--success]="game.status === 'vydane'">{{ game.status_label }}</span>
+            <span class="badge badge--tech">{{ engineTag(game.engine_used) }}</span>
+            <span class="mono">{{ game.release_date_label }}</span>
+          </span>
+        </span>
+        <app-icon name="arrow-up-right" [size]="20" class="spotlight__arrow" />
+      </a>
+    }
+  </div>
+
+  <div class="hero__strip">
+    <div class="container hero__strip-inner">
+      <span class="eyebrow">Technológie</span>
+      @for (engine of site.engines; track engine) {
+        <span class="hero__strip-item">{{ engine }}</span>
+      }
+      <span class="eyebrow hero__strip-sep">Platformy</span>
+      @for (badge of site.platformBadges; track badge.platform) {
+        <span class="hero__strip-item">{{ badge.platform }}</span>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- GAMES ----------------------------------------------------------------->
+<section class="section" aria-labelledby="games-title">
+  <div class="container">
+    <header class="section-head">
+      <div>
+        <p class="section-head__index">01 / Portfólio</p>
+        <h2 id="games-title">Naše tituly</h2>
+        <p class="lead">Od ocenených príbehových adventúr po kooperatívny survival v Unreal Engine 5. Každá hra je osobná výpoveď celého tímu.</p>
+      </div>
+      <a routerLink="/hry" class="btn btn--ghost">
+        Všetky hry
+        <app-icon name="arrow-right" [size]="18" />
+      </a>
+    </header>
+
+    @if (games.error()) {
+      <app-state (retry)="games.reload()" />
+    } @else if (games.isLoading() && games.value().length === 0) {
+      <div class="games-grid">
+        @for (i of [1, 2, 3, 4]; track i) {
+          <div class="skeleton games-grid__skeleton" [class.games-grid__wide]="i === 1"></div>
+        }
+      </div>
+    } @else {
+      <div class="games-grid">
+        @for (game of games.value(); track game.id; let i = $index) {
+          <app-game-card [game]="game" [index]="i" [size]="i === 0 ? 'wide' : 'default'" [class.games-grid__wide]="i === 0" />
+        }
+      </div>
+    }
+  </div>
+</section>
+
+<!-- SERVICES -------------------------------------------------------------->
+<section class="section section--surface" aria-labelledby="services-title">
+  <div class="container">
+    <header class="section-head">
+      <div>
+        <p class="section-head__index">02 / Pre vydavateľov a štúdiá</p>
+        <h2 id="services-title">Vývoj na mieru a Co-Development</h2>
+        <p class="lead">
+          Tie isté tímy, ktoré tvoria naše vlastné hry, posilnia aj tú vašu. Seniorní inžinieri, technickí artisti
+          a QA so skúsenosťami s certifikáciou na všetkých hlavných platformách.
+        </p>
+      </div>
+      <a routerLink="/sluzby" class="btn btn--primary">
+        Spočítať spoluprácu
+        <app-icon name="arrow-right" [size]="18" />
+      </a>
+    </header>
+
+    @if (services.error()) {
+      <app-state (retry)="services.reload()" />
+    } @else {
+      <div class="services line-grid">
+        @for (service of services.value(); track service.id; let i = $index) {
+          <a routerLink="/sluzby" [fragment]="service.slug" class="service">
+            <span class="service__top">
+              <span class="service__icon"><app-icon [name]="serviceIcons[i % serviceIcons.length]" [size]="24" /></span>
+              <span class="mono service__num">0{{ i + 1 }}</span>
+            </span>
+            <h3>{{ service.title }}</h3>
+            <p>{{ service.short_description }}</p>
+            <span class="service__engines">
+              @for (engine of service.engines_supported; track engine) {
+                <span class="badge" [class.badge--tech]="engine.startsWith('Unreal')">{{ engine }}</span>
+              }
+            </span>
+          </a>
+        }
+      </div>
+    }
+  </div>
+</section>
+
+<!-- METRICS --------------------------------------------------------------->
+<section class="section section--tight" aria-labelledby="metrics-title">
+  <div class="container">
+    <h2 id="metrics-title" class="eyebrow metrics__title">Štúdio v číslach</h2>
+    <dl class="metrics">
+      @for (metric of site.trustMetrics; track metric.label) {
+        <div class="metric">
+          <dt class="metric__label">{{ metric.label }}</dt>
+          <dd class="metric__value mono">{{ metric.value }}</dd>
+          <dd class="metric__detail">{{ metric.detail }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- CAREERS --------------------------------------------------------------->
+<section class="section section--tight">
+  <div class="container">
+    <div class="careers">
+      <div class="careers__copy">
+        <p class="eyebrow">
+          <span class="badge badge--success"><span class="badge__dot"></span>Prijímame</span>
+        </p>
+        <h2>Pridaj sa k nám</h2>
+        <p class="lead">
+          Hľadáme ľudí, ktorí chcú robiť hry s dušou – a k tomu férovú mzdu, podiel na tržbách a hardvér bez
+          kompromisov. Mzdu uvádzame vždy transparentne.
+        </p>
+        <a routerLink="/kariera" class="btn btn--primary">
+          @if (jobs.count() > 0) {
+            Pozrieť {{ positionsLabel(jobs.count()) }}
+          } @else {
+            Kariéra v štúdiu
+          }
+          <app-icon name="arrow-right" [size]="18" />
+        </a>
+      </div>
+      <ul class="careers__jobs" role="list">
+        @for (job of topJobs(); track job.id) {
+          <li>
+            <a routerLink="/kariera" [queryParams]="{ pozicia: job.id }" class="job-row">
+              <span>
+                <span class="job-row__title">{{ job.title }}</span>
+                <span class="job-row__meta">{{ job.department_label }} · {{ job.location }}</span>
+              </span>
+              <span class="job-row__salary mono">od {{ formatEur(job.salary_from_eur) }}</span>
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PRESS & PARTNERS ------------------------------------------------------>
+<section class="section section--surface" aria-labelledby="press-title">
+  <div class="container">
+    <header class="section-head">
+      <div>
+        <p class="section-head__index">03 / Médiá a partneri</p>
+        <h2 id="press-title">Čo o nás hovoria</h2>
+      </div>
+    </header>
+
+    <div class="press">
+      @for (quote of site.pressQuotes; track quote.source) {
+        <figure class="press__quote">
+          <blockquote>„{{ quote.quote }}“</blockquote>
+          <figcaption class="eyebrow">— {{ quote.source }}</figcaption>
+        </figure>
+      }
+    </div>
+
+    <div class="partners">
+      <div>
+        <p class="eyebrow">Prezentovali sme na</p>
+        <ul class="partners__list" role="list">
+          @for (event of site.events; track event) {
+            <li>{{ event }}</li>
+          }
+        </ul>
+      </div>
+      <div>
+        <p class="eyebrow">Platformové programy</p>
+        <ul class="partners__list" role="list">
+          @for (badge of site.platformBadges; track badge.platform) {
+            <li>{{ badge.program }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

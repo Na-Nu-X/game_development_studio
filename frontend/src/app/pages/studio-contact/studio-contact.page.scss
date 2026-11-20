@@ -1,0 +1,235 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+
+.story {
+  display: grid;
+  gap: $space-6;
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: $space-9;
+  }
+
+  &__text {
+    display: grid;
+    gap: $space-5;
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: var(--color-text-muted);
+
+    em {
+      color: var(--color-text);
+      font-style: normal;
+      font-weight: 600;
+    }
+  }
+}
+
+.pillars {
+  @include up(md) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.pillar {
+  display: grid;
+  gap: $space-3;
+  align-content: start;
+  padding: $space-6 $space-5;
+
+  &__num {
+    font-size: 0.75rem;
+    color: var(--color-accent);
+  }
+
+  p {
+    color: var(--color-text-muted);
+  }
+}
+
+.leaders {
+  display: grid;
+  gap: $space-4;
+  margin: 0;
+
+  @include up(lg) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.leader {
+  display: flex;
+  gap: $space-5;
+  padding: $space-5;
+  border: 1px solid var(--color-border);
+
+  &__avatar {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border-strong);
+  }
+
+  h3 {
+    font-size: 1.125rem;
+  }
+
+  &__role {
+    margin-top: 2px;
+    font-size: 0.875rem;
+    color: var(--color-accent);
+  }
+
+  &__bio {
+    margin-top: $space-3;
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+  }
+}
+
+.consoles-title {
+  margin-bottom: $space-5;
+  font-size: 0.75rem;
+}
+
+.consoles {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+
+  @include up(lg) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  li {
+    display: grid;
+    gap: $space-1;
+    padding: $space-5;
+    background: var(--color-surface) !important;
+  }
+
+  &__platform {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 700;
+  }
+
+  &__program {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+}
+
+.contact {
+  display: grid;
+  gap: $space-8;
+  scroll-margin-top: var(--nav-height);
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr);
+    gap: $space-9;
+  }
+
+  &__info {
+    display: grid;
+    gap: $space-5;
+    align-content: start;
+
+    h2 {
+      margin-top: -$space-2;
+    }
+  }
+
+  &__form {
+    padding: $space-5;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+
+    @include up(md) {
+      padding: $space-7;
+    }
+  }
+}
+
+.channels {
+  display: grid;
+  margin: 0;
+  border-top: 1px solid var(--color-border);
+
+  li {
+    display: flex;
+    gap: $space-4;
+    padding: $space-4 0;
+    border-bottom: 1px solid var(--color-border);
+
+    app-icon {
+      color: var(--color-accent);
+      margin-top: 2px;
+    }
+
+    > span {
+      display: grid;
+      gap: 2px;
+    }
+
+    a:hover {
+      color: var(--color-accent);
+    }
+  }
+
+  &__label {
+    font-size: 0.8125rem;
+    color: var(--color-text-faint);
+  }
+}
+
+.office {
+  display: grid;
+  gap: $space-3;
+  justify-items: start;
+
+  h3 {
+    font-size: 0.75rem;
+  }
+
+  address {
+    font-style: normal;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+
+    strong {
+      color: var(--color-text);
+    }
+  }
+}
+
+.billing {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2 $space-5;
+  font-size: 0.8125rem;
+
+  div {
+    display: flex;
+    gap: $space-2;
+  }
+
+  dt {
+    color: var(--color-text-faint);
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.registry {
+  font-size: 0.75rem;
+  color: var(--color-text-faint);
+}

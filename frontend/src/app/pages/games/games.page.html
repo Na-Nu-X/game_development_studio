@@ -1,0 +1,74 @@
+<header class="page-hero">
+  <div class="page-hero__bg" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&w=2000&q=70" alt="" />
+  </div>
+  <div class="container page-hero__grid">
+    <div>
+      <p class="eyebrow">Portfólio štúdia</p>
+      <h1>Naše hry</h1>
+      <p class="lead">
+        Vydané tituly, hry v predbežnom prístupe aj projekty, na ktorých práve pracujeme. Každý svet staviame
+        od základov – s vlastným príbehom, hudbou a technológiou.
+      </p>
+    </div>
+  </div>
+</header>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="filters" role="search" aria-label="Filtrovanie hier">
+      <div class="filters__group">
+        <span class="eyebrow">Stav vývoja</span>
+        <div class="chip-group">
+          @for (filter of statusFilters; track filter.label) {
+            <button type="button" class="chip" [attr.aria-pressed]="status() === filter.value" (click)="setStatus(filter.value)">
+              {{ filter.label }}
+            </button>
+          }
+        </div>
+      </div>
+      <div class="filters__group">
+        <span class="eyebrow">Platforma</span>
+        <div class="chip-group">
+          <button type="button" class="chip" [attr.aria-pressed]="platform() === null" (click)="setPlatform(null)">Všetky</button>
+          @for (filter of platformFilters; track filter.code) {
+            <button type="button" class="chip mono" [attr.aria-pressed]="platform() === filter.code" (click)="setPlatform(filter.code)">
+              {{ filter.label }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="results-bar">
+      <span class="mono" aria-live="polite">
+        @if (games.isLoading()) {
+          Načítavam…
+        } @else {
+          {{ resultLabel() }}
+        }
+      </span>
+      @if (status() || platform()) {
+        <button type="button" class="btn btn--text btn--sm" (click)="resetFilters()">Zrušiť filtre</button>
+      }
+    </div>
+
+    @if (games.error()) {
+      <app-state (retry)="games.reload()" />
+    } @else if (games.isLoading() && games.value().length === 0) {
+      <div class="grid">
+        @for (i of [1, 2, 3]; track i) {
+          <div class="skeleton grid__skeleton"></div>
+        }
+      </div>
+    } @else if (games.value().length === 0) {
+      <app-state kind="empty" title="Žiadna hra nezodpovedá filtrom" message="Skúste zvoliť inú platformu alebo stav vývoja." />
+    } @else {
+      <div class="grid" [class.is-loading]="games.isLoading()">
+        @for (game of games.value(); track game.id) {
+          <app-game-card [game]="game" />
+        }
+      </div>
+    }
+  </div>
+</section>

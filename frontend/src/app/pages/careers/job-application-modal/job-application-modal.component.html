@@ -1,0 +1,116 @@
+<div class="modal" (click)="close()">
+  <div
+    class="modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="apply-title"
+    (click)="$event.stopPropagation()"
+  >
+    <header class="modal__head">
+      <div>
+        <p class="eyebrow">Reakcia na pozíciu</p>
+        <h2 id="apply-title">{{ job().title }}</h2>
+        <p class="modal__meta">
+          {{ job().department_label }} · {{ job().location }} ·
+          <span class="mono salary">od {{ formatEur(job().salary_from_eur) }} / mesiac</span>
+        </p>
+      </div>
+      <button type="button" class="modal__close" (click)="close()" aria-label="Zavrieť">
+        <app-icon name="close" [size]="22" />
+      </button>
+    </header>
+
+    @if (state() === 'success') {
+      <div class="success" role="status">
+        <span class="success__icon"><app-icon name="check" [size]="28" /></span>
+        <h3>Ďakujeme, tvoju reakciu sme prijali!</h3>
+        <p>
+          Portfólio si pozorne prejdeme a ozveme sa ti do 5 pracovných dní. Ak máš otázky, napíš nám na
+          <a [href]="'mailto:' + site.contact.careersEmail">{{ site.contact.careersEmail }}</a>.
+        </p>
+        <button type="button" class="btn btn--ghost" (click)="close()">Zavrieť</button>
+      </div>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="modal__form">
+        <div class="form-grid">
+          <div class="field">
+            <label for="app-name">Meno a priezvisko <span class="req">*</span></label>
+            <input #firstField id="app-name" type="text" formControlName="applicantName" autocomplete="name"
+                   [class.is-invalid]="error('applicantName')" />
+            @if (error('applicantName'); as message) {
+              <span class="field__error">{{ message }}</span>
+            }
+          </div>
+
+          <div class="field">
+            <label for="app-email">E-mail <span class="req">*</span></label>
+            <input id="app-email" type="email" formControlName="email" autocomplete="email"
+                   [class.is-invalid]="error('email')" />
+            @if (error('email'); as message) {
+              <span class="field__error">{{ message }}</span>
+            }
+          </div>
+
+          <div class="field">
+            <label for="app-phone">Telefón</label>
+            <input id="app-phone" type="tel" formControlName="phone" autocomplete="tel" placeholder="+421 900 123 456"
+                   [class.is-invalid]="error('phone')" />
+            @if (error('phone'); as message) {
+              <span class="field__error">{{ message }}</span>
+            }
+          </div>
+
+          <div class="field">
+            <label for="app-portfolio">Portfólio <span class="req">*</span></label>
+            <input id="app-portfolio" type="url" formControlName="portfolioUrl" inputmode="url"
+                   placeholder="https://www.artstation.com/…" [class.is-invalid]="error('portfolioUrl')" />
+            @if (error('portfolioUrl'); as message) {
+              <span class="field__error">{{ message }}</span>
+            } @else {
+              <span class="field__hint">ArtStation, GitHub, LinkedIn alebo itch.io</span>
+            }
+          </div>
+
+          <div class="field field--full">
+            <label for="app-note">Pár slov o sebe</label>
+            <textarea id="app-note" formControlName="coverNote" rows="5"
+                      placeholder="Na čom si pracoval/a, čo ťa baví a prečo práve my?"
+                      [class.is-invalid]="error('coverNote')"></textarea>
+            @if (error('coverNote'); as message) {
+              <span class="field__error">{{ message }}</span>
+            }
+          </div>
+
+          <div class="field field--full">
+            <label class="checkbox">
+              <input type="checkbox" formControlName="gdprConsent" />
+              <span>
+                Súhlasím so spracovaním osobných údajov na účely výberového konania v súlade s GDPR.
+                Údaje uchovávame najviac 12 mesiacov.
+              </span>
+            </label>
+            @if (error('gdprConsent'); as message) {
+              <span class="field__error">{{ message }}</span>
+            }
+          </div>
+        </div>
+
+        @if (generalError(); as message) {
+          <div class="alert alert--error" role="alert">{{ message }}</div>
+        }
+
+        <div class="modal__actions">
+          <button type="button" class="btn btn--ghost" (click)="close()">Zrušiť</button>
+          <button type="submit" class="btn btn--primary" [disabled]="state() === 'submitting'">
+            @if (state() === 'submitting') {
+              Odosielam…
+            } @else {
+              Odoslať reakciu
+              <app-icon name="arrow-right" [size]="18" />
+            }
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</div>

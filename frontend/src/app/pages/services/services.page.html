@@ -1,0 +1,137 @@
+<header class="page-hero">
+  <div class="page-hero__bg" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=2000&q=70" alt="" />
+  </div>
+  <div class="container page-hero__grid">
+    <div>
+      <p class="eyebrow">B2B · Pre vydavateľov a štúdiá</p>
+      <h1>Vývoj hier & Co-Development</h1>
+      <p class="lead">
+        Full-cycle produkcia, inžinierstvo v Unreal Engine 5 a Unity, portovanie na všetky súčasné konzoly
+        a AAA art pipeline. Jeden partner – od prototypu po certifikáciu.
+      </p>
+      <div class="hero-ctas">
+        <a routerLink="." fragment="kalkulacka" class="btn btn--primary">
+          Spočítať spoluprácu
+          <app-icon name="arrow-right" [size]="18" />
+        </a>
+        <a routerLink="/studio-a-kontakt" fragment="kontakt-formular" class="btn btn--ghost">Napísať nám</a>
+      </div>
+    </div>
+    <ul class="hero-facts" role="list">
+      <li><span class="mono">do 2 týždňov</span> nástup dedikovaného tímu</li>
+      <li><span class="mono">{{ site.platformBadges.length }} platformy</span> s certifikačnou skúsenosťou</li>
+      <li><span class="mono">70 %</span> seniorných špecialistov</li>
+    </ul>
+  </div>
+</header>
+
+<!-- Services detail -->
+<section class="section" aria-labelledby="capabilities-title">
+  <div class="container">
+    <header class="section-head">
+      <div>
+        <p class="section-head__index">01 / Služby</p>
+        <h2 id="capabilities-title">Čo pre vás urobíme</h2>
+      </div>
+    </header>
+
+    @if (services.error()) {
+      <app-state (retry)="services.reload()" />
+    } @else {
+      <div class="service-list">
+        @for (service of services.value(); track service.id; let i = $index) {
+          <article class="service" [id]="service.slug">
+            <div class="service__head">
+              <span class="service__icon"><app-icon [name]="icons[i % icons.length]" [size]="26" /></span>
+              <span class="mono service__num">0{{ i + 1 }}</span>
+            </div>
+            <div class="service__body">
+              <h3>{{ service.title }}</h3>
+              <p>{{ service.short_description }}</p>
+              <div class="service__engines">
+                @for (engine of service.engines_supported; track engine) {
+                  <span class="badge" [class.badge--tech]="engine.startsWith('Unreal')">{{ engine }}</span>
+                }
+              </div>
+            </div>
+            <div class="service__deliverables">
+              <h4 class="eyebrow">Výstupy</h4>
+              <ul class="feature-list">
+                @for (item of service.deliverables; track item) {
+                  <li>{{ item }}</li>
+                }
+              </ul>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </div>
+</section>
+
+<!-- Console capabilities -->
+<section class="section section--surface" aria-labelledby="platforms-title">
+  <div class="container">
+    <header class="section-head">
+      <div>
+        <p class="section-head__index">02 / Multi-platform</p>
+        <h2 id="platforms-title">Konzolové portovanie bez kompromisov</h2>
+        <p class="lead">
+          Máme skúsenosti s certifikačnými procesmi všetkých hlavných platforiem a prístup k aktuálnym dev kitom.
+        </p>
+      </div>
+    </header>
+    <div class="platforms line-grid">
+      @for (cap of capabilities; track cap.platform) {
+        <div class="platform">
+          <h3>{{ cap.platform }}</h3>
+          <ul class="feature-list">
+            @for (point of cap.points; track point) {
+              <li>{{ point }}</li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section class="section" aria-labelledby="process-title">
+  <div class="container">
+    <header class="section-head">
+      <div>
+        <p class="section-head__index">03 / Proces</p>
+        <h2 id="process-title">Ako začíname spoluprácu</h2>
+      </div>
+    </header>
+    <ol class="process" role="list">
+      @for (step of process; track step.title; let i = $index) {
+        <li class="process__step">
+          <span class="process__num mono">0{{ i + 1 }}</span>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.text }}</p>
+          <span class="badge badge--muted">{{ step.time }}</span>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<!-- Estimator -->
+<section class="section section--surface" id="kalkulacka" aria-labelledby="estimator-section-title">
+  <div class="container">
+    <header class="section-head">
+      <div>
+        <p class="section-head__index">04 / Kalkulačka</p>
+        <h2 id="estimator-section-title">Odhad investície za pár sekúnd</h2>
+        <p class="lead">
+          Zvoľte typ spolupráce, technológiu, veľkosť tímu a dĺžku projektu. Orientačnú cenu a odporúčané
+          zloženie tímu uvidíte okamžite – a jedným klikom si vyžiadate konzultáciu.
+        </p>
+      </div>
+    </header>
+    <app-co-dev-scope-estimator />
+  </div>
+</section>
